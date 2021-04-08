@@ -1,0 +1,31 @@
+{
+    "editor.formatOnSave": true,
+    "editor.fontWeight": null,
+    "editor.defaultFormatter": "HookyQR.beautify",
+    "html.format.unformatted": "felixfbecker.php-intellisense",
+    "beautify.config": "",
+    "beautify.language": {
+
+        "js": {
+            "type": [
+                "javascript",
+                "json",
+                "jsonc"
+            ],
+            "filename": [
+                ".jshintrc",
+                ".jsbeautifyrc"
+            ]
+        },
+        "css": [
+            "css",
+            "less",
+            "scss"
+        ],
+        "html": [
+            "blade",
+            "htm",
+            "html"
+        ]
+    }
+}
