@@ -35,7 +35,6 @@
                 <table class="table table-hover">
                     <thead>
                         <tr class="bg-primary text-white row">
-                            <th>No</th>
                             <th class="col-1 text-center">Gambar Produk</th>
                             <th class="col text-center">Nama Produk</th>
                             <th class="col text-center">Kategori Produk</th>
@@ -50,7 +49,6 @@
                     <tbody>
                         @foreach($view_product as $p)
                         <tr class="row">
-                            <th>{{$p -> id}}</th>
                             <td class="col-1 text-center"><img src="{{$p -> pic_product}}" width="100%" /></td>
                             <td class="col text-center">{{$p -> name_product}}</td>
                             <td class="col text-center">

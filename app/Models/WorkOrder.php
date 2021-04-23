@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Order extends Model
+class WorkOrder extends Model
 {
     use HasFactory;
     protected $fillable = [
-        'id_user', 'name_product', 'total_order'
+        'id_order', 'id_pic', 'status'
     ];
 }

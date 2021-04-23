@@ -35,4 +35,12 @@ class PublicController extends Controller
             return view('assets/product_data_3', compact('view_product_3'))->render();
         }
     }
+
+    function shop_product()
+    {
+        $product_1 = Product::where('category_product', 1)->get();
+        $product_2 = Product::where('category_product', 2)->get();
+        $product_3 = Product::where('category_product', 3)->get();
+        return view('shop', compact('product_1', 'product_2', 'product_3'));
+    }
 }

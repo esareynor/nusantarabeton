@@ -106,10 +106,9 @@
                     <div class="row">
                         <div class="col-xl-12">
                             <div class="hero-cap text-center">
-                                <h2>Pemesanan & Penyewaan Online</h2>
+                                <h2>Pemesanan Produk secara Online</h2>
                                 <p class="text-white">Fitur ini kami persembahkan kepada para pelanggan dalam memesan
-                                    produk atau menyewa
-                                    kendaraan & alat secara online.</p>
+                                    produk secara online.</p>
                             </div>
                         </div>
                     </div>
@@ -121,16 +120,13 @@
         <section class="popular-items latest-padding">
             <div class="container">
                 <div class="row product-btn justify-content-between mb-40">
-                    <div class="properties__button">
+                    <div class="container properties__button">
                         <!--Nav Button  -->
                         <nav>
                             <div class="nav nav-tabs" id="nav-tab" role="tablist">
                                 <a class="nav-item nav-link active" id="nav-home-tab" data-toggle="tab"
                                     href="#nav-order" role="tab" aria-controls="nav-home" aria-selected="true">Pemesanan
                                     Produk</a>
-                                <a class="nav-item nav-link" id="nav-profile-tab" data-toggle="tab" href="#nav-rental"
-                                    role="tab" aria-controls="nav-profile" aria-selected="false">Penyewaan Alat &
-                                    Kendaraan</a>
                             </div>
                         </nav>
                         <!--End Nav Button  -->
@@ -150,120 +146,90 @@
                                 <div class="d-flex p-2 bd-highlight bg-light p-3">You must Login / Register first!
                                 </div>
                                 @else
-                                <form action="#">
+                                <form action="/order" method="POST">
                                     @csrf
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="selectJenis">Nama Pelanggan</label>
                                         </div>
-                                        <select class="custom-select col-xl-2 col-md-6" id="selectJenis">
-                                            <option selected value="">Jenis</option>
-                                            <option value="1">PT</option>
-                                            <option value="2">CV</option>
-                                            <option value="3">Instansi Pendidikan</option>
+                                        <select class="custom-select col-xl-3 col-md-6" id="selectJenis" name="jenis">
+                                            <option selected value="Null">Jenis</option>
+                                            <option value="PT">PT</option>
+                                            <option value="CV">CV</option>
+                                            <option value="Instansi Pendidikan">Instansi Pendidikan</option>
                                             <hr>
-                                            <option value="3">Tuan</option>
-                                            <option value="3">Nyonya</option>
+                                            <option value="Tuan">Tuan</option>
+                                            <option value="Nyonya">Nyonya</option>
+                                            <option value="Lainnya">Lainnya</option>
                                         </select>
-                                        <input type="text" class="form-control col-md-12" name="nama_pelanggan"
+                                        <input type="text" class="form-control col-md-12" name="customer"
                                             style="height: 42px" placeholder="Contoh: Nusantara Beton">
                                     </div>
                                     <div class="d-flex p-2 bg-light mb-3 border rounded">Pilih Produk</div>
                                     <div class="row input-group">
+                                        @foreach($product_1 as $p1)
                                         <div class="col-xl-3 form-check">
                                             <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck1" name="1">
-                                                <label class="custom-control-label" for="ck1">
-                                                    <img src="img/services1.jpg" alt="#" height="200">
-                                                    <p class="text-center">Paving 4x3</p>
+                                                <input type="radio" class="custom-control-input" id="{{$p1 -> id}}"
+                                                    name="id_product" value="{{$p1 -> id}}">
+                                                <label class="custom-control-label" for="{{$p1 -> id}}">
+                                                    <img src="{{$p1 -> pic_product}}" alt="{{$p1 -> name_product}}"
+                                                        height="200">
+                                                    <p class="text-center">{{$p1 -> name_product}}</p>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-xl-3 form-check">
-                                            <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck2" name="1">
-                                                <label class="custom-control-label" for="ck2">
-                                                    <img src="img/services2.jpg" alt="#" height="200">
-                                                    <p class="text-center">Paving 4x3</p>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-12 form-check">
-                                            <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck3" name="1">
-                                                <label class="custom-control-label" for="ck3">
-                                                    <img src="img/services3.jpg" alt="" height="200">
-                                                    <p class="text-center">Paving 4x3</p>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-12 form-check">
-                                            <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck4" name="1">
-                                                <label class="custom-control-label" for="ck4">
-                                                    <img src="img/services4.jpg" alt="#" height="200">
-                                                    <p class="text-center">Paving 4x3</p>
-                                                </label>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                     <div class="row input-group">
-                                        <div class="col-xl-3 col-md-12 mb-3 form-check">
+                                        @foreach($product_2 as $p2)
+                                        <div class="col-xl-3 form-check">
                                             <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck5" name="1">
-                                                <label class="custom-control-label" for="ck5">
-                                                    <img src="img/services1.jpg" alt="#" height="200">
-                                                    <p class="text-center">U-Ditch 4x3</p>
+                                                <input type="radio" class="custom-control-input" id="{{$p2 -> id}}"
+                                                    name="id_product" value="{{$p2 -> id}}">
+                                                <label class="custom-control-label" for="{{$p2 -> id}}">
+                                                    <img src="{{$p2 -> pic_product}}" alt="{{$p2 -> name_product}}"
+                                                        height="200">
+                                                    <p class="text-center">{{$p2 -> name_product}}</p>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-xl-3 col-md-12 mb-3 form-check">
+                                        @endforeach
+                                    </div>
+                                    <div class="row input-group">
+                                        @foreach($product_3 as $p3)
+                                        <div class="col-xl-3 form-check">
                                             <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck6" name="1">
-                                                <label class="custom-control-label" for="ck6">
-                                                    <img src="img/services2.jpg" alt="#" height="200">
-                                                    <p class="text-center">U-Ditch 4x3</p>
+                                                <input type="radio" class="custom-control-input" id="{{$p3 -> id}}"
+                                                    name="id_product" value="{{$p3 -> id}}">
+                                                <label class="custom-control-label" for="{{$p3 -> id}}">
+                                                    <img src="{{$p3 -> pic_product}}" alt="{{$p3 -> name_product}}"
+                                                        height="200">
+                                                    <p class="text-center">{{$p3 -> name_product}}</p>
                                                 </label>
                                             </div>
                                         </div>
-                                        <div class="col-xl-3 col-md-12 mb-3 form-check">
-                                            <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck7" name="1">
-                                                <label class="custom-control-label" for="ck7">
-                                                    <img src="img/services3.jpg" alt="" height="200">
-                                                    <p class="text-center">U-Ditch 4x3</p>
-                                                </label>
-                                            </div>
-                                        </div>
-                                        <div class="col-xl-3 col-md-12 mb-3 form-check">
-                                            <div class="custom-control custom-radio image-checkbox">
-                                                <input type="radio" class="custom-control-input" id="ck8" name="1">
-                                                <label class="custom-control-label" for="ck8">
-                                                    <img src="img/services4.jpg" alt="#" height="200">
-                                                    <p class="text-center">U-Ditch 4x3</p>
-                                                </label>
-                                            </div>
-                                        </div>
+                                        @endforeach
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="selectJenis">Total Pcs</label>
                                         </div>
-                                        <input type="number" class="form-control col-md-12" name="total"
+                                        <input type="number" class="form-control col-md-12" name="total_order"
                                             placeholder="Contoh: 2000 pcs" style="height: 42px">
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="selectJenis">Tanggal Pengiriman</label>
                                         </div>
-                                        <input type="date" class="form-control col-md-12" name="tanggal_pengiriman"
+                                        <input type="date" class="form-control col-md-12" name="date_delivery"
                                             style="height: 42px">
                                     </div>
                                     <div class="input-group mb-3">
                                         <div class="input-group-prepend">
                                             <label class="input-group-text" for="selectJenis">Alamat Pengiriman</label>
                                         </div>
-                                        <input type="text" class="form-control col-md-12" name="alamat_pengiriman"
+                                        <input type="text" class="form-control col-md-12" name="address_delivery"
                                             style="height: 42px"
                                             placeholder="Contoh: Jl. Bisma No. 22, Kecamatan Rungkut, Kota Surabaya">
                                     </div>
@@ -273,32 +239,7 @@
                             </div>
                         </div>
                     </div>
-                    <!-- Card two -->
-                    <div class="tab-pane fade" id="nav-rental" role="tabpanel" aria-labelledby="nav-profile-tab">
-                        <div class="row">
-                            <div class="container col-xl-6 col-lg-6 col-md-12 col-sm-12">
-                                @guest
-                                <div class="d-flex p-2 bd-highlight bg-light p-3">You must Login / Register first!
-                                </div>
-                                @else
-                                <form action="/rental" method="POST">
-                                    <div class="mb-3">
-                                        <label for="NameRental" class="form-label">Name Rental</label>
-                                        <input type="text" class="form-control" id="NameRental">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="TotalRental" class="form-label">Total Rental</label>
-                                        <input type="text" class="form-control" id="TotalRental">
-                                    </div>
-                                    <button type="submit" class="btn btn-primary">Submit</button>
-                                </form>
-                                @endguest
-                            </div>
-                        </div>
-                    </div>
                 </div>
-                <!-- End Nav Card -->
-            </div>
         </section>
         <!-- Latest Products End -->
     </main>

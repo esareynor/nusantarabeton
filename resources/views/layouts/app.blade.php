@@ -77,7 +77,9 @@
                             data-unfold-duration="300" data-unfold-animation-in="fadeIn"
                             data-unfold-animation-out="fadeOut">
                             <!--img class="avatar rounded-circle mr-md-2" src="#" alt="John Doe"-->
+
                             <span class="d-none d-md-block">{{ Auth::user()->name }}</span>
+                            <span class="d-none d-md-block ml-1"><b>| {{ strtoupper(Auth::user()->role) }}</b></span>
                             <i class="gd-angle-down d-none d-md-block ml-2"></i>
                         </a>
 
@@ -93,12 +95,18 @@
                                 </a>
                             </li>
                             <li class="unfold-item unfold-item-has-divider">
-                                <a class="unfold-link d-flex align-items-center text-nowrap" href="#">
+                                <a class="unfold-link d-flex align-items-center text-nowrap"
+                                    href="{{ route('logout') }}" onclick="event.preventDefault();
+                                                     document.getElementById('logout-form').submit();">
                                     <span class="unfold-item-icon mr-3">
                                         <i class="gd-power-off"></i>
                                     </span>
-                                    Sign Out
+                                    {{ __('Logout') }}
                                 </a>
+
+                                <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                                    @csrf
+                                </form>
                             </li>
                         </ul>
                     </div>
@@ -177,26 +185,129 @@
                 <li class="sidebar-heading h6">LAYANAN</li>
                 <!-- End Title -->
 
+                @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manajer' )
+                <!-- Pengguna -->
+                <li class="side-nav-menu-item {{ request()->routeIs('pengguna') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/pengguna">
+                        <span class="side-nav-menu-icon d-flex mr-3">
+                            <i class="gd-user"></i>
+                        </span>
+                        <span class="side-nav-fadeout-on-closed media-body">Pengguna</span>
+                    </a>
+                </li>
+                <!-- End Pengguna -->
                 <!-- Pesanan -->
                 <li class="side-nav-menu-item {{ request()->routeIs('pesanan') ? 'active' : '' }}">
                     <a class="side-nav-menu-link media align-items-center" href="/pesanan">
                         <span class="side-nav-menu-icon d-flex mr-3">
                             <i class="gd-bag"></i>
                         </span>
-                        <span class="side-nav-fadeout-on-closed media-body">Pesanan</span>
+                        <span class="side-nav-fadeout-on-closed media-body">Order Online</span>
+                        @if(DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('orders')->select('status')->where('status', 1)->count()}}
+                        </span>
+                        @elseif(DB::table('orders')->select('status')->where('status', 1)->count() == 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
                     </a>
                 </li>
                 <!-- End Pesanan -->
-                <!-- Penyewaan -->
-                <li class="side-nav-menu-item {{ request()->routeIs('penyewaan') ? 'active' : '' }}">
-                    <a class="side-nav-menu-link media align-items-center" href="/penyewaan">
+                <!-- WorkOrder -->
+                <li class="side-nav-menu-item {{ request()->routeIs('workorder') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/workorder">
                         <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-truck"></i>
+                            <i class="gd-package"></i>
                         </span>
-                        <span class="side-nav-fadeout-on-closed media-body">Penyewaan</span>
+                        <span class="side-nav-fadeout-on-closed media-body">Work Order</span>
+                        @if(DB::table('work_orders')->select('status')->where('status', 1)->count() > 0 ||
+                        DB::table('orders')->select('status')->where('status', 1)->count() > 0 )
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('work_orders')->select('status')->where('status', 1)->count() + DB::table('orders')->select('status')->where('status', 1)->count()}}
+                        </span>
+                        @elseif(DB::table('work_orders')->select('status')->where('status', 1)->count() == 0 ||
+                        DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
                     </a>
                 </li>
-                <!-- End Penyewaan -->
+                <!-- End WorkOrder -->
+
+                @elseif(Auth::user()->role =='marketing')
+                <!-- Pesanan -->
+                <li class="side-nav-menu-item {{ request()->routeIs('pesanan') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/pesanan">
+                        <span class="side-nav-menu-icon d-flex mr-3">
+                            <i class="gd-bag"></i>
+                        </span>
+                        <span class="side-nav-fadeout-on-closed media-body">Order Online</span>
+                        @if(DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('orders')->select('status')->where('status', 1)->count()}}
+                        </span>
+                        @elseif(DB::table('orders')->select('status')->where('status', 1)->count() == 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
+                    </a>
+                </li>
+                <!-- End Pesanan -->
+                <!-- WorkOrder -->
+                <li class="side-nav-menu-item {{ request()->routeIs('workorder') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/workorder">
+                        <span class="side-nav-menu-icon d-flex mr-3">
+                            <i class="gd-package"></i>
+                        </span>
+                        <span class="side-nav-fadeout-on-closed media-body">Work Order</span>
+                        @if(DB::table('work_orders')->select('status')->where('status', 1)->count() > 0 ||
+                        DB::table('orders')->select('status')->where('status', 1)->count() > 0 )
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('work_orders')->select('status')->where('status', 1)->count() + DB::table('orders')->select('status')->where('status', 1)->count()}}
+                        </span>
+                        @elseif(DB::table('work_orders')->select('status')->where('status', 1)->count() == 0 ||
+                        DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
+                    </a>
+                </li>
+                <!-- End WorkOrder -->
+                @elseif(Auth::user()->role =='produksi')
+                <!-- WorkOrder -->
+                <li class="side-nav-menu-item {{ request()->routeIs('workorder') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/workorder">
+                        <span class="side-nav-menu-icon d-flex mr-3">
+                            <i class="gd-package"></i>
+                        </span>
+                        <span class="side-nav-fadeout-on-closed media-body">Work Order</span>
+                        @if(DB::table('work_orders')->select('status')->where('status', 1)->count() > 0 ||
+                        DB::table('orders')->select('status')->where('status', 1)->count() > 0 )
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('work_orders')->select('status')->where('status', 1)->count() + DB::table('orders')->select('status')->where('status', 1)->count()}}
+                        </span>
+                        @elseif(DB::table('work_orders')->select('status')->where('status', 1)->count() == 0 ||
+                        DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
+                    </a>
+                </li>
+                <!-- End WorkOrder -->
+                @else
+                {{--  --}}
+                @endif
 
             </ul>
         </aside>

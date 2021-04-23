@@ -25,7 +25,7 @@ class ProductController extends Controller
      */
     public function index()
     {
-        $view_product = Product::paginate(10);
+        $view_product = Product::orderBy('id', 'DESC')->paginate(10);
         return view('admin/product', compact('view_product'));
     }
 
@@ -46,7 +46,7 @@ class ProductController extends Controller
     public function edit_product_view($id)
     {
         $edit_product_view = Product::where('id', $id)->get();
-        return view('admin/edit_product_view', compact('edit_product_view'));
+        return view('admin/edit_product', compact('edit_product_view'));
     }
 
     public function edit_product_save(Request $request)

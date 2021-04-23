@@ -3316,7 +3316,7 @@ input:focus {
     background: url(../../img/wall.jpg)
 }
 
-.slider-active button.slick-arrow {
+/* .slider-active button.slick-arrow {
     position: absolute;
     top: 50%;
     left: 80px;
@@ -3400,7 +3400,7 @@ input:focus {
 .slider-active .secondary-img {
     position: absolute;
     opacity: 0
-}
+} */
 
 .single-new-pro .product-img {
     overflow: hidden;

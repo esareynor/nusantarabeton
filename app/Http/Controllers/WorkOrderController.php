@@ -3,15 +3,15 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
-use App\Models\WorkOrder;
 use App\Models\Product;
 use App\Models\User;
+use App\Models\WorkOrder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
 
-
-class OrderController extends Controller
+class WorkOrderController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -30,12 +30,19 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $view_order = Order::orderBy('status', 'ASC')->get();
+        $view_order = Order::get();
         $view_user = User::get();
-        return view('admin.order', compact('view_order', 'view_user'));
+        $view_workorder = WorkOrder::orderBy('id', 'DESC')->get();
+        return view('admin.workorder', compact('view_order', 'view_user', 'view_workorder'));
     }
-
-    public function add_order(Request $request)
+    public function add_workorder_view()
+    {
+        $product_1 = Product::where('category_product', 1)->get();
+        $product_2 = Product::where('category_product', 2)->get();
+        $product_3 = Product::where('category_product', 3)->get();
+        return view('admin.add_workorder', compact('product_1', 'product_2', 'product_3'));
+    }
+    public function add_workorder(Request $request)
     {
         $name_product = Product::select('name_product')->where('id', '=', $request->id_product)->get();
         foreach ($name_product as $np) {
@@ -47,28 +54,24 @@ class OrderController extends Controller
                 'customer' => $request->jenis . ' ' . '-' . ' ' . $request->customer,
                 'date_delivery' => $request->date_delivery,
                 'address_delivery' => $request->address_delivery,
+                'status' => 1,
+                'created_at' => Carbon::now()->toDateString(),
             ]);
-            return redirect('home');
+            return redirect('workorder');
         }
     }
-    public function detail_pesanan($id)
+    public function detail_workorder_view($id)
     {
         $view_order_detail = Order::where('id', $id)->get();
         $view_user_detail = User::get();
         $view_product_detail = Product::get();
-        return view('admin.detail_order', compact('view_order_detail', 'view_user_detail', 'view_product_detail'));
+        return view('admin.detail_workorder', compact('view_order_detail', 'view_user_detail', 'view_product_detail'));
     }
-    public function konfirmasi_pesanan(Request $request)
+    public function detail_workorder_view_2($id)
     {
-        Order::where('id', $request->id)->update([
-            'status' => 2,
-        ]);
-        WorkOrder::insert([
-            'id_order' => $request->id,
-            'id_pic' => Auth::user()->id,
-            'status' => 1,
-            'created_at' => Carbon::now()->toDateString(),
-        ]);
-        return redirect('pesanan');
+        $view_order_detail = Order::where('id', $id)->get();
+        $view_user_detail = User::get();
+        $view_product_detail = Product::get();
+        return view('admin.detail_workorder', compact('view_order_detail', 'view_user_detail', 'view_product_detail'));
     }
 }
