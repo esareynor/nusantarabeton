@@ -46,6 +46,8 @@ class OrderController extends Controller
                 'total_order' => $request->total_order,
                 'customer' => $request->jenis . ' ' . '-' . ' ' . $request->customer,
                 'date_delivery' => $request->date_delivery,
+                'role' => Auth::user()->role,
+                'status' => 1,
                 'address_delivery' => $request->address_delivery,
             ]);
             return redirect('home');
@@ -66,7 +68,7 @@ class OrderController extends Controller
         WorkOrder::insert([
             'id_order' => $request->id,
             'id_pic' => Auth::user()->id,
-            'status' => 1,
+            'status' => 2,
             'created_at' => Carbon::now()->toDateString(),
         ]);
         return redirect('pesanan');

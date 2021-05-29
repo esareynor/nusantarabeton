@@ -71,7 +71,7 @@
                                 <span class="text-primary"><a href="/workorder"><u>Masuk Work Order</u></a>
                                 </span>
                                 @elseif($od -> status == 3)
-                                <span class="text-light">Order Selesai</span>
+                                <span class="text-primary">Work Progress [ Produksi ]</span>
                                 @elseif($od -> status == 4)
                                 <span class="text-danger">Order Dibatalkan</span>
                                 @else
@@ -80,6 +80,7 @@
                             </div>
                         </div>
                     </div>
+                    @if(Auth::user()->role == "marketing")
                     @if($od -> status == 1)
                     <button type="submit" class="btn btn-primary float-right">Konfirmasi ke Work Order</button>
                     @elseif($od -> status == 2)
@@ -91,6 +92,7 @@
                     {{--  --}}
                     @else
                     {{--  --}}
+                    @endif
                     @endif
                 </form>
                 @endforeach

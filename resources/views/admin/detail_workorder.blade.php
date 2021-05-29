@@ -10,7 +10,7 @@
             <!-- Form -->
             <div class="container">
                 @foreach($view_order_detail as $od)
-                <form action="/konfirmasi_pesanan/{{($od -> id)}}" method="POST">
+                <form action="/start_work" method="POST">
                     @csrf
                     <input type="hidden" name="id" value="{{ $od -> id }}" />
                     <div class="form-row">
@@ -66,12 +66,12 @@
                             <label for="name_product">Status Pesanan</label>
                             <div class="d-flex p-2">
                                 @if($od -> status == 1)
-                                <span class="text-warning">Menunggu Konfirmasi [ Marketing ]</span>
+                                <span class="text-warning">Menunggu Konfirmasi [ Produksi ]</span>
                                 @elseif($od -> status == 2)
                                 <span class="text-primary"><a href="/workorder"><u>Masuk Work Order</u></a>
                                 </span>
                                 @elseif($od -> status == 3)
-                                <span class="text-light">Order Selesai</span>
+                                <span class="text-primary">Work Progress [ Produksi ]</span>
                                 @elseif($od -> status == 4)
                                 <span class="text-danger">Order Dibatalkan</span>
                                 @else
@@ -80,17 +80,19 @@
                             </div>
                         </div>
                     </div>
-                    @if($od -> status == 1)
-                    <button type="submit" class="btn btn-primary float-right">Konfirmasi ke Work Order</button>
-                    @elseif($od -> status == 2)
-                    {{--  --}}
-                    </span>
+                    @if(Auth::user()->role == "produksi")
+                    @if($od -> status == 2)
+                    <button type="submit" class="btn btn-primary float-right">Mulai Produksi</button>
                     @elseif($od -> status == 3)
                     {{--  --}}
+                    </span>
                     @elseif($od -> status == 4)
+                    {{--  --}}
+                    @elseif($od -> status == 5)
                     {{--  --}}
                     @else
                     {{--  --}}
+                    @endif
                     @endif
                 </form>
                 @endforeach

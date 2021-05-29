@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Project;
+use App\Models\News;
 
 class PublicController extends Controller
 {
@@ -12,7 +14,9 @@ class PublicController extends Controller
         $view_product_1 = Product::where('category_product', 1)->paginate(1);
         $view_product_2 = Product::where('category_product', 2)->paginate(1);
         $view_product_3 = Product::where('category_product', 3)->paginate(1);
-        return view('index', compact('view_product_1', 'view_product_2', 'view_product_3'));
+        $view_project = Project::orderBy('id', 'ASC')->limit(10)->get();
+        $view_news = News::orderBy('id', 'ASC')->limit(10)->get();
+        return view('index', compact('view_product_1', 'view_product_2', 'view_product_3', 'view_project', 'view_news'));
     }
     function fetch_product_1(Request $request)
     {

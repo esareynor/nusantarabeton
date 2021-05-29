@@ -65,11 +65,6 @@
                                 placeholder="21 x 10,5 x 6">
                         </div>
                         <div class="form-group col-12">
-                            <label for="total_product">Total Produk (pcs)</label>
-                            <input type="text" class="form-control" name="total_product"
-                                value="{{ $p -> total_product }}" placeholder="1000">
-                        </div>
-                        <div class="form-group col-12">
                             <label for="weight_product">Berat Produk (kg)</label>
                             <input type="text" class="form-control" name="weight_product"
                                 value="{{ $p -> weight_product }}" placeholder="5 kg">

@@ -143,9 +143,16 @@
                         <div class="row">
                             <div class="container col-xl-9 col-md-12 col-sm-12">
                                 @guest
-                                <div class="d-flex p-2 bd-highlight bg-light p-3">You must Login / Register first!
+                                <div class="d-flex p-2 bd-highlight bg-light p-3"><span>You must Login / Register
+                                        first!</span>
                                 </div>
-                                @else
+                                @elseif(Auth::user()->role == "admin" || Auth::user()->role == "marketing" ||
+                                Auth::user()->role == "produksi" || Auth::user()->role == "inventory" )
+                                <div class="d-flex p-2 bd-highlight bg-light p-3"><span>You must be a <b
+                                            class="text-dark">
+                                            Member </b> role to order online!</span>
+                                </div>
+                                @elseif(Auth::user()->role == "member" )
                                 <form action="/order" method="POST">
                                     @csrf
                                     <div class="input-group mb-3">

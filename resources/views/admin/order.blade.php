@@ -29,7 +29,6 @@
                                 @foreach($view_order as $o)
                                 @foreach($view_user as $u)
                                 @if($u -> id == $o -> id_user)
-                                @if($u -> role == 'member')
                                 <tr>
                                     <td class="py-3">{{$o -> id}}</td>
                                     <td class="py-3">{{ $o -> name_product }}</td>
@@ -55,13 +54,13 @@
                                     <td class="py-3 text-primary"><a href="/workorder"><u>Masuk Work Order</u></a>
                                     </td>
                                     @elseif($o -> status == 3)
-                                    <td class="py-3 text-light">Order Selesai</td>
+                                    <td class="py-3 text-primary"><a href="/workorder"><u>Work Progress [ Produksi
+                                                ]</u></a></td>
                                     @elseif($o -> status == 4)
                                     <td class="py-3 text-danger">Order Dibatalkan</td>
                                     @else
                                     <td class="py-3">-</td>
                                     @endif
-                                    @if($o -> status == 1)
                                     <td class="py-3">
                                         <a class="media align-items-center" href="/detail_pesanan/{{ $o -> id }}">
                                             <span class="side-nav-menu-icon d-flex mr-2">
@@ -70,17 +69,7 @@
                                             <span class="side-nav-fadeout-on-closed media-body">Detail</span>
                                         </a>
                                     </td>
-                                    @elseif($o -> status == 2)
-                                    <td class="py-3"></td>
-                                    @elseif($o -> status == 3)
-                                    <td class="py-3"></td>
-                                    @elseif($o -> status == 4)
-                                    <td class="py-3"></td>
-                                    @else
-                                    <td class="py-3">-</td>
-                                    @endif
                                 </tr>
-                                @endif
                                 @endif
                                 @endforeach
                                 @endforeach

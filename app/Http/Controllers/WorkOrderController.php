@@ -55,6 +55,7 @@ class WorkOrderController extends Controller
                 'date_delivery' => $request->date_delivery,
                 'address_delivery' => $request->address_delivery,
                 'status' => 1,
+                'role' => Auth::user()->role,
                 'created_at' => Carbon::now()->toDateString(),
             ]);
             return redirect('workorder');

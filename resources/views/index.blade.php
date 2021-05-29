@@ -546,12 +546,14 @@
                         </tr>
                     </thead>
                     <tbody>
+                        @foreach($view_project as $pr)
                         <tr class="text-dark">
-                            <th scope="row" class="align-middle">1</th>
-                            <th class="align-middle">PT. Adhi Karya (PERSERO) TBK</th>
-                            <td class="align-middle">Paving</td>
-                            <td class="align-middle">Merr - Surabaya</td>
+                            <th scope="row" class="align-middle">{{$pr -> id}}</th>
+                            <th class="align-middle">{{$pr -> company_name}}</th>
+                            <td class="align-middle">{{$pr -> category_product}}</td>
+                            <td class="align-middle">{{$pr -> company_address}}</td>
                         </tr>
+                        @endforeach
                     </tbody>
                     <div id="News"></div>
                 </table>
@@ -575,41 +577,48 @@
             <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12">
                 <div class="container p-3">
                     <div class="row justify-content-center">
-                        <div class="col-xl-6 col-md-12">
+                        @foreach($view_news as $vn)
+                        <div class="col-xl-12 col-md-12">
                             <div class="card mb-3">
                                 <div class="row">
-                                    <div class="col-md-4">
-                                        <img class="p-3" src="img/LNK.png" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-dark">PT. Lautan Natural Krimerindo</h5>
-                                            <p class="card-text">Location : Mojosari<br>
-                                                Clients : PT. Lautan Natural Krimerindo<br>
-                                                Details : Pengurugan Sirtu, Retaining Wall dan Pengaspalan</p>
+                                    <div class="col">
+                                        <div class="card-body row">
+                                            @if($vn -> pic_news == null)
+                                            <div class="col-12">
+                                                <h5 class="card-body text-dark">{{ $vn -> title_news }}</h5>
+                                                <div class="card-body text-justify">{!!
+                                                    \Illuminate\Support\Str::limit($vn
+                                                    -> paragraph_news, 200, $end='...')
+                                                    !!}
+                                                </div>
+                                            </div>
+                                            @else
+                                            <div class="col-2">
+                                                <img class="p-3" src="{{$vn -> pic_news}}" alt="..." width="250">
+                                            </div>
+                                            <div class="col-1">
+                                                {{--  --}}
+                                            </div>
+                                            <div class="col-9">
+                                                <h5 class="card-body text-dark">{{ $vn -> title_news }}</h5>
+                                                <div class="card-body text-justify">{!!
+                                                    \Illuminate\Support\Str::limit($vn
+                                                    -> paragraph_news, 300, $end='...')
+                                                    !!}
+                                                </div>
+                                            </div>
+                                            @endif
+                                        </div>
+                                        <div class="card-footer">
+                                            <a href="#" class="btn btn-primary">
+                                                Selengkapnya
+                                            </a>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-xl-6 col-md-12">
-                            <div class="card mb-3">
-                                <div class="row">
-                                    <div class="col-md-4">
-                                        <img class="p-3" src="img/hsk.png" alt="...">
-                                    </div>
-                                    <div class="col-md-8">
-                                        <div class="card-body">
-                                            <h5 class="card-title text-dark">PT. Hanampi Sejahtera Kahuripan
-                                            </h5>
-                                            <p class="card-text">Location : Gresik<br>
-                                                Client : PT. Hanampi Sejahtera Kahuripan<br>
-                                                Details : Pekerjaan Office, Gudang, dan Pengaspalan</p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        @endforeach
                         <div id="Contact"></div>
                     </div>
                 </div>

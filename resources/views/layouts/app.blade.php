@@ -17,6 +17,11 @@
     <meta http-equiv="x-ua-compatible" content="ie=edge">
     <meta name="csrf-token" content="{{ csrf_token() }}">
 
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.css" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.6/cropper.js"></script>
+
+    <script src="//cdn.ckeditor.com/4.14.1/standard/ckeditor.js"></script>
+
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
@@ -125,62 +130,42 @@
                 <li class="sidebar-heading h6">{{ strtoupper(Auth::user()->role) }}</li>
                 <!-- End Title -->
 
-                <!-- Dashboard -->
                 <li class="side-nav-menu-item {{ request()->routeIs('home') ? 'active' : '' }}"">
                     <a class=" side-nav-menu-link media align-items-center" href="/home">
                     <span class="side-nav-menu-icon d-flex mr-3">
-                        <i class="gd-bar-chart"></i>
+                        <i class="gd-home"></i>
                     </span>
                     <span class="side-nav-fadeout-on-closed media-body">Dashboard</span>
                     </a>
                 </li>
-                <!-- End Dashboard -->
-                <!-- Landing -->
-                <li class="side-nav-menu-item side-nav-has-menu 
-                    {{ request()->routeIs('product') ? 'side-nav-opened active' : '' }} 
-                    {{ request()->routeIs('service') ? 'side-nav-opened active' : '' }}
-                    {{ request()->routeIs('equipment') ? 'side-nav-opened active' : '' }}
-                    {{ request()->routeIs('project') ? 'side-nav-opened active' : '' }}
-                    {{ request()->routeIs('news') ? 'side-nav-opened active' : '' }}">
-                    <a class=" side-nav-menu-link media align-items-center" href="#" data-target="#subLanding">
-                        <span class="side-nav-menu-icon d-flex mr-3">
-                            <i class="gd-archive"></i>
-                        </span>
-                        <span class="side-nav-fadeout-on-closed media-body">Landing Page</span>
-                        <span class="side-nav-control-icon d-flex">
-                            <i class="gd-angle-right side-nav-fadeout-on-closed"></i>
-                        </span>
-                        <span class="side-nav__indicator side-nav-fadeout-on-closed"></span>
+                @if(Auth::user()->role == 'admin' || Auth::user()->role == 'manajer')
+                <li class=" side-nav-menu-item {{ request()->routeIs('product') ? 'active' : '' }}"">
+                        <a class=" side-nav-menu-link media align-items-center" href="/product">
+                    <span class="side-nav-menu-icon d-flex mr-3">
+                        <i class="gd-bag"></i>
+                    </span>
+                    <span class="side-nav-fadeout-on-closed media-body">Produk</span>
                     </a>
-
-                    <!-- Landing: subLanding -->
-                    <ul id="subLanding" class="side-nav-menu side-nav-menu-second-level mb-0" style=" display: 
-                        @if(request()->routeIs('product') || request()->routeIs('service') ||
-                        request()->routeIs('equipment') || request()->routeIs('project') || request()->routeIs('news'))
-                        block
-                        @else
-                        none
-                        @endif">
-                        <li class=" side-nav-menu-item {{ request()->routeIs('product') ? 'active' : '' }}"">
-                        <a class=" side-nav-menu-link" href="/product">Product</a>
-                        </li>
-                        <li class="side-nav-menu-item {{ request()->routeIs('service') ? 'active' : '' }}"">
-                            <a class=" side-nav-menu-link" href="/service">Services</a>
-                        </li>
-                        <li class="side-nav-menu-item {{ request()->routeIs('equipment') ? 'active' : '' }}"">
-                            <a class=" side-nav-menu-link" href="/equipment">Equipment</a>
-                        </li>
-                        <li class="side-nav-menu-item {{ request()->routeIs('project') ? 'active' : '' }}"">
-                            <a class=" side-nav-menu-link" href="/project">Project</a>
-                        </li>
-                        <li class="side-nav-menu-item {{ request()->routeIs('news') ? 'active' : '' }}"">
-                            <a class=" side-nav-menu-link" href="/news">News</a>
-                        </li>
-                    </ul>
-                    <!-- End Landing: subLanding -->
                 </li>
-                <!-- End Landing -->
-
+                <li class="side-nav-menu-item {{ request()->routeIs('project') ? 'active' : '' }}"">
+                            <a class=" side-nav-menu-link media align-items-center" href="/project">
+                    <span class="side-nav-menu-icon d-flex mr-3">
+                        <i class="gd-harddrives"></i>
+                    </span>
+                    <span class="side-nav-fadeout-on-closed media-body">Project</span>
+                    </a>
+                </li>
+                <li class="side-nav-menu-item {{ request()->routeIs('news') ? 'active' : '' }}"">
+                            <a class=" side-nav-menu-link media align-items-center" href="/news">
+                    <span class="side-nav-menu-icon d-flex mr-3">
+                        <i class="gd-receipt"></i>
+                    </span>
+                    <span class="side-nav-fadeout-on-closed media-body">News</span>
+                    </a>
+                </li>
+                @else
+                {{--  --}}
+                @endif
                 <!-- Title -->
                 <li class="sidebar-heading h6">LAYANAN</li>
                 <!-- End Title -->
@@ -203,11 +188,13 @@
                             <i class="gd-bag"></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">Order Online</span>
-                        @if(DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        @if(DB::table('orders')->select('status')->where('status', 1)->where('role', 'member')->count()
+                        > 0)
                         <span class="text-white bg-primary rounded py-1 px-2">
-                            {{DB::table('orders')->select('status')->where('status', 1)->count()}}
+                            {{DB::table('orders')->select('status')->where('status', 1)->where('role', 'member')->count()}}
                         </span>
-                        @elseif(DB::table('orders')->select('status')->where('status', 1)->count() == 0)
+                        @elseif(DB::table('orders')->select('status')->where('status', 1)->where('role',
+                        'member')->count() == 0)
                         {{--  --}}
                         @else
                         {{--  --}}
@@ -223,13 +210,11 @@
                             <i class="gd-package"></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">Work Order</span>
-                        @if(DB::table('work_orders')->select('status')->where('status', 1)->count() > 0 ||
-                        DB::table('orders')->select('status')->where('status', 1)->count() > 0 )
+                        @if(DB::table('orders')->select('status')->where('status', 2)->count() > 0)
                         <span class="text-white bg-primary rounded py-1 px-2">
-                            {{DB::table('work_orders')->select('status')->where('status', 1)->count() + DB::table('orders')->select('status')->where('status', 1)->count()}}
+                            {{DB::table('orders')->select('status')->where('status', 2)->count()}}
                         </span>
-                        @elseif(DB::table('work_orders')->select('status')->where('status', 1)->count() == 0 ||
-                        DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        @elseif(DB::table('orders')->select('status')->where('status', 2)->count() > 0)
                         {{--  --}}
                         @else
                         {{--  --}}
@@ -238,7 +223,29 @@
                     </a>
                 </li>
                 <!-- End WorkOrder -->
-
+                <!-- WorkProgress -->
+                <li class="side-nav-menu-item {{ request()->routeIs('work') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/work">
+                        <span class="side-nav-menu-icon d-flex mr-3">
+                            <i class="gd-hummer"></i>
+                        </span>
+                        <span class="side-nav-fadeout-on-closed media-body">Produksi</span>
+                        @if(DB::table('work_orders')->select('status')->where('status', 3)->count() > 0 ||
+                        DB::table('orders')->select('status')->where('status', 3)->count() > 0
+                        )
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('orders')->select('status')->where('status', 3)->count()}}
+                        </span>
+                        @elseif(DB::table('work_orders')->select('status')->where('status', 3)->count() == 0 ||
+                        DB::table('orders')->select('status')->where('status', 3)->count() > 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
+                    </a>
+                </li>
+                <!-- End WorkProgress -->
                 @elseif(Auth::user()->role =='marketing')
                 <!-- Pesanan -->
                 <li class="side-nav-menu-item {{ request()->routeIs('pesanan') ? 'active' : '' }}">
@@ -247,7 +254,8 @@
                             <i class="gd-bag"></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">Order Online</span>
-                        @if(DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        @if(DB::table('orders')->select('status')->where('status', 1)->count()
+                        > 0)
                         <span class="text-white bg-primary rounded py-1 px-2">
                             {{DB::table('orders')->select('status')->where('status', 1)->count()}}
                         </span>
@@ -267,13 +275,11 @@
                             <i class="gd-package"></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">Work Order</span>
-                        @if(DB::table('work_orders')->select('status')->where('status', 1)->count() > 0 ||
-                        DB::table('orders')->select('status')->where('status', 1)->count() > 0 )
+                        @if(DB::table('orders')->select('status')->where('status', 2)->count() > 0)
                         <span class="text-white bg-primary rounded py-1 px-2">
-                            {{DB::table('work_orders')->select('status')->where('status', 1)->count() + DB::table('orders')->select('status')->where('status', 1)->count()}}
+                            {{DB::table('orders')->select('status')->where('status', 2)->count()}}
                         </span>
-                        @elseif(DB::table('work_orders')->select('status')->where('status', 1)->count() == 0 ||
-                        DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        @elseif(DB::table('orders')->select('status')->where('status', 2)->count() > 0)
                         {{--  --}}
                         @else
                         {{--  --}}
@@ -290,13 +296,11 @@
                             <i class="gd-package"></i>
                         </span>
                         <span class="side-nav-fadeout-on-closed media-body">Work Order</span>
-                        @if(DB::table('work_orders')->select('status')->where('status', 1)->count() > 0 ||
-                        DB::table('orders')->select('status')->where('status', 1)->count() > 0 )
+                        @if(DB::table('orders')->select('status')->where('status', 2)->count() > 0)
                         <span class="text-white bg-primary rounded py-1 px-2">
-                            {{DB::table('work_orders')->select('status')->where('status', 1)->count() + DB::table('orders')->select('status')->where('status', 1)->count()}}
+                            {{DB::table('orders')->select('status')->where('status', 2)->count()}}
                         </span>
-                        @elseif(DB::table('work_orders')->select('status')->where('status', 1)->count() == 0 ||
-                        DB::table('orders')->select('status')->where('status', 1)->count() > 0)
+                        @elseif(DB::table('orders')->select('status')->where('status', 2)->count() > 0)
                         {{--  --}}
                         @else
                         {{--  --}}
@@ -305,6 +309,29 @@
                     </a>
                 </li>
                 <!-- End WorkOrder -->
+                <!-- WorkProgress -->
+                <li class="side-nav-menu-item {{ request()->routeIs('work') ? 'active' : '' }}">
+                    <a class="side-nav-menu-link media align-items-center" href="/work">
+                        <span class="side-nav-menu-icon d-flex mr-3">
+                            <i class="gd-hummer"></i>
+                        </span>
+                        <span class="side-nav-fadeout-on-closed media-body">Produksi</span>
+                        @if(DB::table('work_orders')->select('status')->where('status', 3)->count() > 0 ||
+                        DB::table('orders')->select('status')->where('status', 3)->count() > 0
+                        )
+                        <span class="text-white bg-primary rounded py-1 px-2">
+                            {{DB::table('orders')->select('status')->where('status', 3)->count()}}
+                        </span>
+                        @elseif(DB::table('work_orders')->select('status')->where('status', 3)->count() == 0 ||
+                        DB::table('orders')->select('status')->where('status', 3)->count() > 0)
+                        {{--  --}}
+                        @else
+                        {{--  --}}
+                        @endif
+                        </span>
+                    </a>
+                </li>
+                <!-- End WorkProgress -->
                 @else
                 {{--  --}}
                 @endif

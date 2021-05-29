@@ -29,6 +29,11 @@ class ProductController extends Controller
         return view('admin/product', compact('view_product'));
     }
 
+    public function add_product_view()
+    {
+        return view('admin/add_product');
+    }
+
     public function add_product(Request $request)
     {
         DB::table('products')->insert([
@@ -60,7 +65,6 @@ class ProductController extends Controller
                 'name_product' => $request->name_product,
                 'category_product' => $request->category_product,
                 'size_product' => $request->size_product,
-                'total_product' => $request->total_product,
                 'weight_product' => $request->weight_product,
                 'color_product' => $color_product,
             ]);
@@ -71,13 +75,15 @@ class ProductController extends Controller
                 'name_product' => $request->name_product,
                 'category_product' => $request->category_product,
                 'size_product' => $request->size_product,
-                'total_product' => $request->total_product,
                 'weight_product' => $request->weight_product,
                 'color_product' => $color_product,
             ]);
         }
-
-
+        return redirect('product');
+    }
+    public function delete_product($id)
+    {
+        Product::where('id', $id)->delete();
         return redirect('product');
     }
 }
